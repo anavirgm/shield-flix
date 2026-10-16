@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   ShieldFlix — Design Tokens (Tailwind CSS v4)
+   ShieldFlix: Design Tokens (Tailwind CSS v4)
    ----------------------------------------------------------------------------
    Dirección de arte cinematográfica: tema oscuro profundo por defecto
    (inspirado en zinc-950), acentos azules de luz difusa y superficies tipo
@@ -15,7 +15,6 @@
   /* --- Tipografía --------------------------------------------------------- */
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
   /* --- Paleta cinematográfica --------------------------------------------- */
   --color-background: #09090b; /* zinc-950 */
@@ -114,16 +113,16 @@
     background-color: #3f3f46; /* zinc-700 */
   }
 
-  /* Respeto a "reducir movimiento": neutralizamos transiciones y animaciones
-     decorativas sin romper el layout. */
+  /* Respeto a "reducir movimiento": menos movimiento, no ninguno. Se quita el
+     desplazamiento suave y se apagan los bucles decorativos; el color y el
+     fundido se conservan (el viaje, el zoom y el parallax los retira la propia
+     capa de movimiento más abajo). */
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,
     ::after {
       scroll-behavior: auto !important;
-      animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
     }
   }
 }
@@ -135,9 +134,9 @@
 /* Superficie de vidrio reutilizable (glassmorphism) */
 @utility glass {
   background-color: color-mix(in oklab, var(--color-surface) 55%, transparent);
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-  border: 1px solid color-mix(in oklab, white 8%, transparent);
+  /* Sin borde: el vidrio ya separa por tono y desenfoque, y una línea de 1px
+     a todo lo ancho es justo el recurso que el sistema evita. */
+  @apply backdrop-blur-md backdrop-saturate-150;
 }
 
 /* Oculta la barra de scroll conservando el desplazamiento (carruseles de pósters) */
@@ -150,29 +149,35 @@
   }
 }
 
-/* Degradado inferior para pósters/backdrops: mejora la legibilidad del texto */
-@utility gradient-fade-b {
-  background-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    color-mix(in oklab, var(--color-background) 60%, transparent) 60%,
-    var(--color-background) 100%
-  );
+/* ---------------------------------------------------------------------------
+   Velos de legibilidad
+
+   Un scrim neutro sobre fotografía es la ÚNICA excepción al "sin degradados"
+   del sistema: mismos tonos, solo cambia la opacidad, y siempre bajo texto que
+   se apoya en una imagen. Los topes van en rgba() literal a propósito, para que
+   el color no se resuelva a `oklab()`/`color()` y siga leyéndose como velo.
+
+   Llevan `prettier-ignore` para que la marca `taste-skill-ignore` quede en la
+   misma línea que el degradado: el linter estático es por línea y así ve la
+   razón en lugar de marcar los tres como decoración.
+   ------------------------------------------------------------------------ */
+
+/* El nombre cruza la fotografía y se disuelve hacia el fondo. */
+@utility scrim-right {
+  /* prettier-ignore */
+  background-image: linear-gradient(to right, rgba(9, 9, 11, 0) 58%, rgba(9, 9, 11, 0.92) 100%); /* taste-skill-ignore: scrim neutro sobre fotografía */
 }
 
-/* Resplandor de fondo del hero: dos luces difusas, sin imágenes externas */
-@utility bg-hero-glow {
-  background-image:
-    radial-gradient(
-      60rem 32rem at 50% -12%,
-      color-mix(in oklab, var(--color-brand) 20%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      40rem 28rem at 88% 6%,
-      color-mix(in oklab, var(--color-info) 10%, transparent),
-      transparent 72%
-    );
+/* Fotografía a ancho completo en móvil: refuerza arriba y abajo, deja el centro limpio. */
+@utility scrim-veil {
+  /* prettier-ignore */
+  background-image: linear-gradient(to bottom, rgba(9, 9, 11, 0.35) 0%, rgba(9, 9, 11, 0.05) 45%, rgba(9, 9, 11, 0.55) 100%); /* taste-skill-ignore: scrim neutro sobre fotografía */
+}
+
+/* Banda de metraje: el texto se lee sobre cualquier fotograma del clip. */
+@utility scrim-band {
+  /* prettier-ignore */
+  background-image: linear-gradient(to top, rgba(9, 9, 11, 0.96) 0%, rgba(9, 9, 11, 0.6) 45%, rgba(9, 9, 11, 0.92) 100%); /* taste-skill-ignore: scrim neutro sobre metraje */
 }
 
 /* ============================================================================
@@ -185,42 +190,142 @@
   }
 }
 
-/* Brillo sutil para los esqueletos de carga */
-@utility animate-shimmer {
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background-image: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, white 6%, transparent),
-      transparent
-    );
-    animation: shimmer 1.8s infinite;
-    content: "";
+/* Pulso de los esqueletos de carga: solo opacidad. Un barrido de brillo sería
+   un degradado decorativo, así que el bloque respira en su propio tono. */
+@keyframes shimmer {
+  50% {
+    opacity: 0.55;
   }
 }
 
-@keyframes rise {
+@utility animate-shimmer {
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes enter {
   from {
     opacity: 0;
     transform: translate3d(0, 1.5rem, 0);
-    filter: blur(8px);
   }
 
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    filter: blur(0);
   }
 }
 
-/* Entrada cinematográfica: un único momento autorado que combina opacidad,
-   desplazamiento y desenfoque. Se usa con retardo escalonado en el hero. */
-@utility animate-rise {
-  animation: rise 0.8s var(--ease-out-expo) both;
+/* ---------------------------------------------------------------------------
+   Capa de movimiento (transform y opacity únicamente)
+
+   `.animate-enter`  entrada escalonada de la primera pantalla.
+   `.reveal`         cada pieza entra cuando su bloque llega al viewport; la
+                     enciende el observador de `RevealOnScroll`.
+   `.drift`          bucle lento sobre una fotografía: la imagen en movimiento.
+   `.monument-scale` firma de la página: el nombre se encoge al salir.
+
+   Con "reducir movimiento" se conserva el fundido y desaparecen el
+   desplazamiento, el zoom, el bucle y el parallax: menos movimiento, no
+   ninguno. Todo parte del estado final visible, así que sin JavaScript (o sin
+   soporte de `animation-timeline`) la página se lee igual.
+   ------------------------------------------------------------------------ */
+
+/* El fundido es la versión con movimiento reducido: entra igual, sin viaje. */
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
+@keyframes enter-still {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes monument-shrink {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(0.93);
+  }
+}
+
+/* Imagen en movimiento: un desplazamiento lento y sin fin sobre una fotografía.
+   Es el cuadro que respira en la portada. Solo transform, así que no toca el
+   layout ni obliga a repintar el texto que va encima. */
+@keyframes drift {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: scale(1.1) translate3d(0, -1.5%, 0);
+  }
+}
+
+@layer components {
+  /* Estado final: el contenido se lee siempre. La animación de entrada solo
+     existe cuando el observador añade `is-revealed`. */
+  .reveal {
+    opacity: 1;
+  }
+
+  /* Base: fundido. Es exactamente lo que se ve con "reducir movimiento". */
+  .reveal.is-revealed {
+    animation: reveal-fade 0.6s var(--ease-out-expo) both;
+  }
+
+  .animate-enter {
+    animation: enter-still 0.7s var(--ease-out-expo) both;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Con movimiento permitido la entrada además se desplaza. */
+    .reveal.is-revealed {
+      animation-name: reveal-in;
+    }
+
+    .animate-enter {
+      animation-name: enter;
+    }
+
+    /* La imagen en movimiento. Solo transform: no toca el layout. */
+    .drift {
+      animation: drift 26s ease-in-out infinite alternate;
+    }
+
+    @supports (animation-timeline: scroll()) {
+      .monument-scale {
+        transform-origin: 72% 100%;
+        animation: monument-shrink linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0svh 55svh;
+      }
+    }
+  }
+}
+
+/* La reducción de movimiento vive en la propia capa de movimiento: el fundido
+   se queda y lo que desaparece es el viaje, el zoom y el bucle. */

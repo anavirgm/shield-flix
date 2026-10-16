@@ -50,9 +50,9 @@ const typeScale: { name: string; className: string; sample: string }[] = [
     sample: "Catálogo actualizado desde TMDB.",
   },
   {
-    name: "mono · xs",
-    className: "font-mono text-xs text-muted",
-    sample: "--color-brand: #3b82f6",
+    name: "label · sm",
+    className: "text-sm text-muted",
+    sample: "Catálogo actualizado desde TMDB.",
   },
 ];
 
@@ -66,7 +66,7 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-6 border-t border-border/60 py-12">
+    <section className="flex flex-col gap-6 py-14">
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
         <p className="max-w-2xl text-sm text-pretty text-muted">{description}</p>
@@ -107,7 +107,7 @@ export default function DesignSystemPage() {
                   className={`h-16 rounded-xl border border-border ${swatch.className}`}
                   aria-hidden="true"
                 />
-                <span className="font-mono text-xs text-muted">{swatch.name}</span>
+                <span className="text-sm text-muted">{swatch.name}</span>
               </li>
             ))}
           </ul>
@@ -115,12 +115,12 @@ export default function DesignSystemPage() {
 
         <Section
           title="Tipografía"
-          description="Geist Sans para interfaz, Geist Mono para datos y código. Escala con pasos evidentes de tamaño y peso."
+          description="Geist Sans para toda la interfaz, con pasos evidentes de tamaño y peso. La monoespaciada queda reservada al código literal, como el token <code>--color-brand</code>."
         >
           <ul className="flex flex-col gap-6">
             {typeScale.map((item) => (
               <li key={item.name} className="flex flex-col gap-1">
-                <span className="font-mono text-xs text-muted">{item.name}</span>
+                <span className="text-sm text-muted">{item.name}</span>
                 <span className={item.className}>{item.sample}</span>
               </li>
             ))}

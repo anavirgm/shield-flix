@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# skills de diseño (configuración y salida local)
+/.taste-skill/
+/.impeccable/

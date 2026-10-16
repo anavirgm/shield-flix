@@ -38,11 +38,9 @@ export function MobileNav() {
         {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
       </Button>
 
-      <div
-        id="mobile-nav-panel"
-        hidden={!open}
-        className="absolute inset-x-0 top-16 border-b border-border/60 bg-background/95 backdrop-blur-xl"
-      >
+      {/* Panel sólido bajo la barra: el tono lo separa y evita una segunda
+          superficie con desenfoque y una línea de 1px a todo lo ancho. */}
+      <div id="mobile-nav-panel" hidden={!open} className="absolute inset-x-0 top-16 bg-surface">
         <nav aria-label="Principal" className="px-5 pt-4 pb-6 sm:px-8">
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => (

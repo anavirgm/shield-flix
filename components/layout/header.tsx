@@ -9,11 +9,12 @@ import { navItems } from "@/constants/navigation";
 /** Barra superior fija, translúcida, con navegación, búsqueda y acceso. */
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 glass">
+    /* Sin línea inferior: el vidrio y la sombra de superposición ya la separan. */
+    <header className="sticky top-0 z-50 glass">
       <Container className="flex h-16 items-center gap-3">
         <Link
           href="/"
-          aria-label="ShieldFlix — inicio"
+          aria-label="ShieldFlix, inicio"
           className="flex shrink-0 items-center gap-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <span className="grid size-9 place-items-center rounded-xl bg-brand/15 text-brand-soft ring-1 ring-brand/30 ring-inset">

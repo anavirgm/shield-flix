@@ -17,12 +17,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-brand-strong text-white shadow-elevated hover:bg-brand-deep",
+        primary: "bg-brand-strong text-white hover:bg-brand-deep",
         secondary: "border border-border bg-surface text-foreground hover:bg-surface-hover",
         outline:
           "border border-border bg-transparent text-foreground hover:border-brand/60 hover:bg-surface",
         ghost: "bg-transparent text-muted hover:bg-surface hover:text-foreground",
-        danger: "bg-danger-strong text-white shadow-elevated hover:bg-danger-deep",
+        danger: "bg-danger-strong text-white hover:bg-danger-deep",
       },
       size: {
         sm: "h-9 px-3 text-sm [&_svg]:size-4",

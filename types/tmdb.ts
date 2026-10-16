@@ -302,11 +302,7 @@ export type TmdbStillSize = "w92" | "w185" | "w300" | "original";
 
 /** Unión de todos los tamaños de imagen soportados por TMDB. */
 export type TmdbImageSize =
-  | TmdbPosterSize
-  | TmdbBackdropSize
-  | TmdbLogosSize
-  | TmdbProfileSize
-  | TmdbStillSize;
+  TmdbPosterSize | TmdbBackdropSize | TmdbLogosSize | TmdbProfileSize | TmdbStillSize;
 
 /** Imagen individual dentro de `/movie/{id}/images`. */
 export type TmdbImage = {
