@@ -1,0 +1,66 @@
+import Link from "next/link";
+import { Search, ShieldCheck } from "lucide-react";
+
+import { Container } from "@/components/layout/container";
+import { MobileNav } from "@/components/layout/mobile-nav";
+import { Button, Input } from "@/components/ui";
+import { navItems } from "@/constants/navigation";
+
+/** Barra superior fija, translúcida, con navegación, búsqueda y acceso. */
+export function Header() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-border/60 glass">
+      <Container className="flex h-16 items-center gap-3">
+        <Link
+          href="/"
+          aria-label="ShieldFlix — inicio"
+          className="flex shrink-0 items-center gap-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <span className="grid size-9 place-items-center rounded-xl bg-brand/15 text-brand-soft ring-1 ring-brand/30 ring-inset">
+            <ShieldCheck className="size-5" aria-hidden="true" />
+          </span>
+          <span className="text-lg font-semibold tracking-tight">
+            Shield<span className="text-brand">Flix</span>
+          </span>
+        </Link>
+
+        <nav aria-label="Principal" className="hidden md:block">
+          <ul className="flex items-center gap-1">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="block rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors duration-200 hover:bg-surface hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2">
+          <form role="search" action="/" className="relative hidden sm:block">
+            <label htmlFor="site-search" className="sr-only">
+              Buscar títulos
+            </label>
+            <Search
+              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted"
+              aria-hidden="true"
+            />
+            <Input
+              id="site-search"
+              name="q"
+              placeholder="Buscar títulos…"
+              className="h-10 w-52 pl-9 lg:w-72"
+            />
+          </form>
+
+          <Button className="hidden sm:inline-flex">Iniciar sesión</Button>
+
+          <MobileNav />
+        </div>
+      </Container>
+    </header>
+  );
+}

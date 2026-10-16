@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "geist",
+        "createdAt": "2026-10-16T05:01:38.228Z",
+        "reason": "Decisión de marca: Geist es la fuente del stack Next.js/Vercel del proyecto y se mantiene por legibilidad. Hallazgo asumido y documentado en el issue #6."
+      }
+    ]
+  }
+}

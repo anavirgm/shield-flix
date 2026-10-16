@@ -25,10 +25,31 @@
   --color-foreground: #fafafa; /* zinc-50  */
   --color-muted: #a1a1aa; /* zinc-400 */
 
-  /* --- Acento / marca ----------------------------------------------------- */
+  /* --- Acento / marca -----------------------------------------------------
+     `brand` es el acento (texto, bordes, foco). Para rellenos con texto blanco
+     se usan `brand-strong` / `brand-deep`, que garantizan contraste AA. */
   --color-brand: #3b82f6; /* blue-500 */
-  --color-brand-strong: #2563eb; /* blue-600 */
+  --color-brand-strong: #2563eb; /* blue-600 · relleno accesible */
+  --color-brand-deep: #1d4ed8; /* blue-700 · hover       */
   --color-brand-soft: #60a5fa; /* blue-400 */
+
+  /* --- Semánticos: estados y feedback ------------------------------------- */
+  --color-success: #22c55e; /* green-500 */
+  --color-warning: #f59e0b; /* amber-500 */
+  --color-danger: #ef4444; /* red-500 · texto y bordes    */
+  --color-danger-strong: #dc2626; /* red-600 · relleno accesible */
+  --color-danger-deep: #b91c1c; /* red-700 · hover             */
+  --color-info: #38bdf8; /* sky-400   */
+  --color-ring: #60a5fa; /* blue-400 · anillo de foco accesible */
+
+  /* --- Curvas de animación (ease-out, sin rebotes) ------------------------ */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- Sombras: elevación neutra, siempre con desplazamiento y desenfoque.
+     Sin halos cromáticos: el color de marca vive en rellenos, bordes y en la
+     luz del hero, nunca en las sombras. ------------------------------------- */
+  --shadow-elevated: 0 1px 2px 0 rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.6);
 }
 
 /* ============================================================================
@@ -41,6 +62,7 @@
        para que controles nativos (scrollbars, autofill, inputs) sean coherentes. */
     color-scheme: dark;
     scroll-behavior: smooth;
+    caret-color: var(--color-brand-soft);
   }
 
   body {
@@ -54,6 +76,18 @@
   :focus-visible {
     outline: 2px solid var(--color-brand-soft);
     outline-offset: 2px;
+  }
+
+  /* Superficies que también forman parte del sistema: selección y subrayados.
+     Se derivan de la marca en lugar de dejar el azul por defecto del navegador. */
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-brand) 40%, transparent);
+    color: var(--color-foreground);
+  }
+
+  a,
+  u {
+    text-underline-offset: 0.2em;
   }
 
   /* Scrollbar sutil, estilo plataforma de streaming */
@@ -78,6 +112,19 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background-color: #3f3f46; /* zinc-700 */
+  }
+
+  /* Respeto a "reducir movimiento": neutralizamos transiciones y animaciones
+     decorativas sin romper el layout. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -113,6 +160,21 @@
   );
 }
 
+/* Resplandor de fondo del hero: dos luces difusas, sin imágenes externas */
+@utility bg-hero-glow {
+  background-image:
+    radial-gradient(
+      60rem 32rem at 50% -12%,
+      color-mix(in oklab, var(--color-brand) 20%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40rem 28rem at 88% 6%,
+      color-mix(in oklab, var(--color-info) 10%, transparent),
+      transparent 72%
+    );
+}
+
 /* ============================================================================
    Animaciones
    ========================================================================= */
@@ -141,4 +203,24 @@
     animation: shimmer 1.8s infinite;
     content: "";
   }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+/* Entrada cinematográfica: un único momento autorado que combina opacidad,
+   desplazamiento y desenfoque. Se usa con retardo escalonado en el hero. */
+@utility animate-rise {
+  animation: rise 0.8s var(--ease-out-expo) both;
 }
