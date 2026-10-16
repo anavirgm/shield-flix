@@ -1,0 +1,21 @@
+# Dependencias y artefactos de build
+node_modules/
+.next/
+out/
+build/
+coverage/
+
+# Lockfiles y generados
+pnpm-lock.yaml
+next-env.d.ts
+
+# Documentación y esquema SQL (fuera del scope del formateador)
+docs/
+supabase/
+README.md
+
+# Estáticos
+public/
+
+# Entorno
+.env*

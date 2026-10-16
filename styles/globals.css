@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   ShieldFlix — Design Tokens (Tailwind CSS v4)
+   ----------------------------------------------------------------------------
+   Dirección de arte cinematográfica: tema oscuro profundo por defecto
+   (inspirado en zinc-950), acentos azules de luz difusa y superficies tipo
+   vidrio (glassmorphism).
+
+   En Tailwind v4 los tokens se declaran con @theme y generan utilidades de
+   forma automática (p. ej. --color-brand => bg-brand / text-brand / border-brand).
+   ========================================================================= */
+
+@theme {
+  /* --- Tipografía --------------------------------------------------------- */
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* --- Paleta cinematográfica --------------------------------------------- */
+  --color-background: #09090b; /* zinc-950 */
+  --color-surface: #18181b; /* zinc-900 */
+  --color-surface-hover: #27272a; /* zinc-800 */
+  --color-border: #27272a; /* zinc-800 */
+  --color-foreground: #fafafa; /* zinc-50  */
+  --color-muted: #a1a1aa; /* zinc-400 */
+
+  /* --- Acento / marca ----------------------------------------------------- */
+  --color-brand: #3b82f6; /* blue-500 */
+  --color-brand-strong: #2563eb; /* blue-600 */
+  --color-brand-soft: #60a5fa; /* blue-400 */
+}
+
+/* ============================================================================
+   Base
+   ========================================================================= */
+
+@layer base {
+  html {
+    /* El tema es oscuro por diseño: forzamos el esquema de color del navegador
+       para que controles nativos (scrollbars, autofill, inputs) sean coherentes. */
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Foco visible y accesible en todo el sitio */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-soft);
+    outline-offset: 2px;
+  }
+
+  /* Scrollbar sutil, estilo plataforma de streaming */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface-hover) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-surface-hover);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #3f3f46; /* zinc-700 */
+  }
+}
+
+/* ============================================================================
+   Utilidades propias
+   ========================================================================= */
+
+/* Superficie de vidrio reutilizable (glassmorphism) */
+@utility glass {
+  background-color: color-mix(in oklab, var(--color-surface) 55%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 8%, transparent);
+}
+
+/* Oculta la barra de scroll conservando el desplazamiento (carruseles de pósters) */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Degradado inferior para pósters/backdrops: mejora la legibilidad del texto */
+@utility gradient-fade-b {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--color-background) 60%, transparent) 60%,
+    var(--color-background) 100%
+  );
+}
+
+/* ============================================================================
+   Animaciones
+   ========================================================================= */
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Brillo sutil para los esqueletos de carga */
+@utility animate-shimmer {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, white 6%, transparent),
+      transparent
+    );
+    animation: shimmer 1.8s infinite;
+    content: "";
+  }
+}

@@ -7,11 +7,13 @@
 **ShieldFlix** es una aplicación web que combina catálogo de **TMDB**, reproducción con **vidsrc.to** (película completa) y **YouTube** (tráiler), autenticación con **Supabase**, favoritos, historial con reanudación ("Continuar Viendo") y un **Admin Dashboard** en tiempo real.
 
 **Stack principal:**
-- **Frontend:** [Next.js 15+](https://nextjs.org/) (App Router) + [TypeScript](https://www.typescriptlang.org/) (strict)
-- **Estilos:** [Tailwind CSS](https://tailwindcss.com/) + glassmorphism + paleta oscura cinematográfica
+- **Frontend:** [Next.js 16](https://nextjs.org/) (App Router, Turbopack) + [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) (strict)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first `@theme`) + glassmorphism + paleta oscura cinematográfica
 - **Backend/DB:** [Supabase](https://supabase.com/) (Auth + PostgreSQL + RLS + Realtime)
 - **APIs:** [TMDB API](https://developer.themoviedb.org/) (metadatos, búsqueda, géneros, videos)
 - **Reproductores:** [vidsrc.to](https://vidsrc.to/) (embed película completa) + [YouTube](https://www.youtube.com/) (trailer)
+
+**Requisitos:** Node.js ≥ 20.9, pnpm ≥ 10.
 
 ## 2. Características Clave
 
@@ -53,6 +55,28 @@ Backend/DB (Supabase)
 
 **Componentes clave:** `<MovieCard/>`, `<MovieSlider/>`, `<VideoPlayer/>`, `<ServerSelector/>`, `<InfiniteScrollGrid/>`, `<AdminTable/>`.
 
+### 4.1 Estructura de carpetas
+
+```text
+shield-flix/
+├── app/                    # App Router: rutas, layouts, loading.tsx, error.tsx, not-found.tsx
+├── actions/                # Server Actions (auth, favoritos, historial, CRUD admin)
+├── components/
+│   ├── ui/                 # Primitivas (Button, Input, Skeleton, Badge, Spinner)
+│   ├── layout/             # Header, Footer, contenedores de página
+│   └── shared/             # MovieCard, MovieSlider, VideoPlayer, AdminTable, ...
+├── constants/              # Rutas, queries de TMDB, configuración estática
+├── features/               # Slices por dominio (auth, catalog, player, admin)
+├── hooks/                  # Custom hooks de cliente (useDebounce, useInfiniteScroll, ...)
+├── lib/                    # Clientes e infraestructura (supabase, tmdb, env)
+├── styles/                 # globals.css con design tokens (@theme)
+├── supabase/               # Esquema SQL, RLS, seeds
+├── types/                  # Tipos compartidos (database.types.ts, tmdb.ts)
+└── utils/                  # Utilidades puras (cn, formatters)
+```
+
+> **Path alias:** `@/*` apunta a la raíz del proyecto (`@/components/ui/button`, `@/lib/tmdb`, ...).
+
 ## 5. Configuración Rápida
 
 ### 5.1 Clonar repositorio
@@ -68,7 +92,11 @@ pnpm install
 ```
 
 ### 5.3 Variables de entorno
-Crear `.env.local` (no commitear). Copiar estructura desde intención:
+Crear `.env.local` a partir de la plantilla `.env.example` (no commitear):
+
+```bash
+cp .env.example .env.local
+```
 
 ```env
 # Supabase
@@ -79,6 +107,9 @@ SUPABASE_SERVICE_ROLE_KEY=
 # TMDB
 TMDB_API_KEY=
 TMDB_BASE_URL=https://api.themoviedb.org/3
+
+# Reproductor
+NEXT_PUBLIC_VIDSRC_BASE_URL=https://vidsrc.to/embed/movie
 ```
 
 > `SUPABASE_SERVICE_ROLE_KEY` y `TMDB_API_KEY` **solo** uso servidor. Nunca exponer con `NEXT_PUBLIC_*`.
@@ -96,16 +127,17 @@ pnpm dev
 
 ### 5.6 Verificaciones
 ```bash
-pnpm lint
-pnpm typecheck  # tsc --noEmit
-pnpm build
+pnpm lint          # ESLint (flat config)
+pnpm typecheck     # next typegen + tsc --noEmit
+pnpm format:check  # Prettier
+pnpm build         # Build de producción (Turbopack)
 ```
 
 ## 6. Roadmap (estado)
 
 | Sprint | Enfoque | Estado |
 |---|---|---|
-| **Sprint 1** | Core Architecture & Database Setup | ⏳ Pendiente |
+| **Sprint 1** | Core Architecture & Database Setup | 🚧 En progreso |
 | **Sprint 2** | TMDB Catalog, Search & Infinite Scroll | ⏳ Pendiente |
 | **Sprint 3** | Multi-Server Player (vidsrc.to + YouTube), Auth & Watch History | ⏳ Pendiente |
 | **Sprint 4** | Admin Dashboard & Security Hardening | ⏳ Pendiente |
