@@ -29,6 +29,3 @@ export const LANDING_SOURCES: readonly [PreviewTitle, PreviewTitle, PreviewTitle
   pick(1148365),
   pick(1423191),
 ];
-
-/** Recorte fotográfico de los módulos de funciones. */
-export const LANDING_FEATURE_PHOTO = pick(1228834);

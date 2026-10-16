@@ -26,7 +26,7 @@ export function MobileNav() {
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <Button
         variant="ghost"
         size="icon"
@@ -41,7 +41,7 @@ export function MobileNav() {
       {/* Panel sólido bajo la barra: el tono lo separa y evita una segunda
           superficie con desenfoque y una línea de 1px a todo lo ancho. */}
       <div id="mobile-nav-panel" hidden={!open} className="absolute inset-x-0 top-16 bg-surface">
-        <nav aria-label="Principal" className="px-5 pt-4 pb-6 sm:px-8">
+        <nav aria-label="Principal" className="px-4 pt-4 pb-6 sm:px-6">
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => (
               <li key={item.href}>

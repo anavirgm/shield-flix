@@ -17,7 +17,7 @@ export function CatalogChapters() {
     <section
       id="catalogo"
       aria-labelledby="catalogo-titulo"
-      className="px-4 py-20 sm:px-6 sm:py-28"
+      className="scroll-mt-16 px-4 py-20 sm:px-6 sm:py-28"
     >
       <div className="mx-auto grid w-full max-w-[80rem] gap-14 lg:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] lg:items-start lg:gap-16">
         <div className="@container min-w-0">

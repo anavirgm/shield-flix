@@ -46,7 +46,7 @@ export function SourceShowcase() {
     <section
       id="reproductor"
       aria-labelledby="reproductor-titulo"
-      className="bg-surface/40 px-4 py-20 sm:px-6 sm:py-28"
+      className="scroll-mt-16 bg-surface/40 px-4 py-20 sm:px-6 sm:py-28"
     >
       <div className="mx-auto grid w-full max-w-[80rem] items-center gap-12 lg:min-h-[78svh] lg:grid-cols-2 lg:gap-20">
         {/* Placa cuadrada: el fotograma con el anillo y el triángulo encima. */}
@@ -137,7 +137,7 @@ export function SourceShowcase() {
               href="#catalogo"
               className="reveal flex h-18 items-center justify-between gap-4 rounded-xl bg-foreground px-6 text-base font-medium text-background transition-colors duration-200 ease-out-quart hover:bg-foreground/85"
             >
-              Explorar catálogo
+              Explorar el catálogo
               <ArrowRight className="size-5" aria-hidden="true" />
             </Link>
             <Link

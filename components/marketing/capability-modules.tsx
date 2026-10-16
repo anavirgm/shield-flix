@@ -1,13 +1,11 @@
 import type { ReactNode } from "react";
 
 import {
-  AdminRowsFragment,
+  GenreRowsFragment,
   ListFragment,
   ProgressFragment,
   SourceRowsFragment,
 } from "@/components/marketing/ui-fragments";
-import { LANDING_FEATURE_PHOTO } from "@/features/catalog/data/landing-roles";
-import { tmdbImageUrl } from "@/lib/tmdb/image";
 
 type Capability = {
   title: string;
@@ -15,50 +13,37 @@ type Capability = {
   panel: ReactNode;
 };
 
-const photo = tmdbImageUrl(LANDING_FEATURE_PHOTO.backdropPath, "w780");
-
 /**
  * Funciones: el producto demostrándose a sí mismo.
  *
- * Cada módulo lleva una prueba pequeña a la izquierda —un recorte de interfaz a
- * tamaño real o una fotografía muy recortada— y el texto al lado, nunca debajo.
- * Los módulos van sangrados: el titular queda en el margen de la página y las
- * pruebas empiezan más adentro, así la sección se lee como una columna.
+ * Cada módulo lleva un recorte de interfaz a la izquierda —a tamaño real, sin
+ * escalar— y el texto a su derecha, nunca debajo. Los módulos van sangrados: el
+ * titular queda en el margen de la página y los recortes empiezan más adentro,
+ * así la sección se lee como una columna y no como una rejilla.
+ *
+ * La altura de cada panel la decide su contenido, y eso es lo que mantiene el
+ * ritmo: el reproductor ocupa tres filas, el historial ocupa un póster.
  */
 const capabilities: Capability[] = [
   {
     title: "Un reproductor con reserva",
-    body: "Cada título guarda sus fuentes con su calidad y su prioridad. La primera que responde es la que suena; las demás quedan a un clic.",
+    body: "Cada título guarda sus fuentes con su calidad y su prioridad. Si la primera no responde, la siguiente entra sin perder el minuto.",
     panel: <SourceRowsFragment />,
   },
   {
     title: "Retoma donde lo dejaste",
-    body: "El historial avanza por título, temporada y episodio. Volver a una serie no cuesta buscar el capítulo donde te quedaste.",
+    body: "El historial avanza por título, temporada y episodio. Volver a una serie no cuesta buscar por dónde ibas.",
     panel: <ProgressFragment />,
   },
   {
     title: "Una lista que es tuya",
-    body: "Favoritos y pendientes viven en Postgres con RLS activo: cada perfil ve lo suyo y nadie más puede leerlo desde el cliente.",
+    body: "Favoritos y pendientes viven en tu perfil: la base de datos comprueba quién puede leerlos antes de devolver una sola fila.",
     panel: <ListFragment />,
   },
   {
-    title: "Géneros normalizados",
-    body: "Películas y géneros se cruzan en una tabla intermedia con su índice, así que filtrar por género es una consulta y no un texto libre.",
-    panel: <AdminRowsFragment />,
-  },
-  {
-    title: "Administración sin atajos",
-    body: "El rol se comprueba dentro de la base de datos con una función propia, y un trigger impide escalar privilegios desde el navegador.",
-    panel: photo ? (
-      <img
-        src={photo}
-        alt={`Fotograma de ${LANDING_FEATURE_PHOTO.title}`}
-        width={780}
-        height={439}
-        loading="lazy"
-        className="size-full object-cover"
-      />
-    ) : null,
+    title: "Filtrar por género",
+    body: "Cada título se cruza con sus géneros en su propia tabla, así que filtrar por género es una consulta con índice y no una búsqueda de texto.",
+    panel: <GenreRowsFragment />,
   },
 ];
 
@@ -67,17 +52,21 @@ export function CapabilityModules() {
     <section
       id="funciones"
       aria-labelledby="funciones-titulo"
-      className="bg-surface/40 px-4 py-20 sm:px-6 sm:py-28"
+      className="scroll-mt-16 bg-surface/40 px-4 py-20 sm:px-6 sm:py-28"
     >
       <div className="mx-auto w-full max-w-[80rem]">
         <h2
           id="funciones-titulo"
-          className="reveal text-[2rem] leading-tight font-semibold tracking-[-0.025em] text-foreground"
+          className="reveal max-w-[24ch] text-[2rem] leading-tight font-semibold tracking-[-0.025em] text-foreground"
         >
           Lo que ya hace
         </h2>
 
-        <div className="mt-14 flex flex-col gap-20 lg:pl-[14%]">
+        <p className="reveal mt-5 max-w-[52ch] text-base leading-relaxed text-muted [animation-delay:60ms]">
+          Cada pieza lleva su recorte real de interfaz: nada aquí está dibujado a mano.
+        </p>
+
+        <div className="mt-16 flex flex-col gap-24 lg:pl-[14%]">
           {capabilities.map((capability) => (
             <article
               key={capability.title}

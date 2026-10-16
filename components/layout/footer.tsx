@@ -2,52 +2,83 @@ import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
+import { PROJECT_URL } from "@/constants/landing";
 
+/** Enlaces de servicio: los mismos destinos que la barra superior, más el código. */
 const footerLinks: { label: string; href: string; external?: boolean }[] = [
   { label: "Catálogo", href: "/#catalogo" },
+  { label: "Reproductor", href: "/#reproductor" },
   { label: "Funciones", href: "/#funciones" },
   { label: "Design system", href: "/design" },
-  { label: "GitHub", href: "https://github.com/anavirgm/shield-flix", external: true },
+  { label: "GitHub", href: PROJECT_URL, external: true },
 ];
 
+/**
+ * Pie del sitio.
+ *
+ * Cierra con el mismo gesto que abre la portada: el nombre a ancho completo,
+ * ahora invirtiendo campo y tinta. Encima van los datos que hay que poder leer
+ * —qué es esto, qué queda por hacer, la atribución de TMDB, que es obligatoria
+ * al usar sus datos e imágenes— en el margen de la página y a tamaño de texto,
+ * no en columnas de enlaces.
+ */
 export function Footer() {
   return (
-    /* Sin línea superior: el cambio de tono ya separa el pie del contenido. */
-    <footer className="bg-surface/30">
-      <Container className="flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand/15 text-brand-soft">
-            <ShieldCheck className="size-4" aria-hidden="true" />
-          </span>
-          <p className="text-sm text-pretty text-muted">
-            <span className="font-medium text-foreground">ShieldFlix</span>: catálogo, reproductor
-            multi-servidor y panel de administración.
+    <footer>
+      {/* El nombre entero, a ancho completo: la misma firma que abre la portada. */}
+      <div className="bg-foreground text-background">
+        <div className="@container mx-auto w-full max-w-[88rem] px-4 pt-10 pb-4 sm:px-6">
+          <p className="text-right text-[17cqw] leading-[0.85] font-semibold tracking-[-0.05em]">
+            ShieldFlix
           </p>
         </div>
+      </div>
 
-        <nav aria-label="Secundaria">
-          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-            {footerLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noreferrer" : undefined}
-                  className="text-muted transition-colors duration-200 hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </Container>
+      <div className="bg-surface/30">
+        <Container className="grid gap-10 py-14 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-16">
+          <div className="flex max-w-[52ch] flex-col gap-4">
+            <p className="flex items-center gap-2">
+              <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand/15 text-brand-soft">
+                <ShieldCheck className="size-4" aria-hidden="true" />
+              </span>
+              <span className="text-base font-semibold">ShieldFlix</span>
+            </p>
 
-      <Container className="pb-10">
-        <p className="text-sm text-muted">
-          © ShieldFlix. Proyecto de portafolio, datos de catálogo por TMDB.
-        </p>
-      </Container>
+            <p className="text-sm leading-relaxed text-muted">
+              Catálogo de TMDB, varias fuentes de reproducción por título, historial de visionado y
+              panel de administración. Un proyecto de portafolio en construcción.
+            </p>
+
+            <p className="text-sm leading-relaxed text-muted">
+              Vista previa construida con datos e imágenes de TMDB. Este producto usa la API de
+              TMDB, pero no está respaldado ni certificado por TMDB.
+            </p>
+          </div>
+
+          <nav aria-label="Secundaria">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:flex-col sm:gap-y-3 sm:text-right">
+              {footerLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noreferrer" : undefined}
+                    className="text-muted transition-colors duration-200 hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Container>
+
+        <Container className="pb-12">
+          <p className="text-sm text-muted">
+            © ShieldFlix. Proyecto de portafolio, datos de catálogo por TMDB.
+          </p>
+        </Container>
+      </div>
     </footer>
   );
 }

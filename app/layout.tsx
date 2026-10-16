@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import "@/styles/globals.css";
 
 /*
@@ -36,11 +38,11 @@ export const viewport: Viewport = {
 };
 
 /**
- * Marco raíz: solo el documento y el contenido.
+ * Marco raíz: el documento y el marco que comparten todas las páginas.
  *
- * La cabecera y el pie no viven aquí porque la portada no los usa: el nombre de
- * la marca es su titular, así que repetirlo en una barra solo lo gasta. Las
- * páginas interiores aportan su propio marco en `app/(app)/layout.tsx`.
+ * La cabecera y el pie viven aquí, no en un grupo de rutas, para que la portada
+ * y las páginas interiores tengan el mismo armazón: la barra superior con la
+ * marca, la navegación y la búsqueda, y un pie que cierra con el nombre.
  */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -53,9 +55,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Saltar al contenido
         </a>
 
+        <Header />
+
         <div id="contenido" tabIndex={-1} className="flex flex-1 flex-col">
           {children}
         </div>
+
+        <Footer />
       </body>
     </html>
   );

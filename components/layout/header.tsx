@@ -25,7 +25,10 @@ export function Header() {
           </span>
         </Link>
 
-        <nav aria-label="Principal" className="hidden md:block">
+        {/* La navegación de escritorio entra en `lg`, no en `md`: entre 768 y
+            1024 los cuatro enlaces, la búsqueda y el acceso no caben en una
+            sola fila y desbordaban el ancho de la página. */}
+        <nav aria-label="Principal" className="hidden lg:block">
           <ul className="flex items-center gap-1">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -53,7 +56,7 @@ export function Header() {
               id="site-search"
               name="q"
               placeholder="Buscar títulos…"
-              className="h-10 w-52 pl-9 lg:w-72"
+              className="h-10 w-52 pl-9 xl:w-72"
             />
           </form>
 
