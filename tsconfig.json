@@ -46,5 +46,11 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  /*
+   * `validator.ts` lo genera Next.js y su variante "strict" (la que escribe
+   * `next dev` en `.next/dev/types`) importa tipos que no siempre usa, por lo
+   * que no satisface `noUnusedLocals`/`noUnusedParameters`. Es código generado:
+   * queda fuera del type-check para no penalizar la estrictez del nuestro.
+   */
+  "exclude": ["node_modules", ".next/types/validator.ts", ".next/dev/types/validator.ts"]
 }

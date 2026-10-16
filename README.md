@@ -68,11 +68,14 @@ shield-flix/
 ├── constants/              # Rutas, queries de TMDB, configuración estática
 ├── features/               # Slices por dominio (auth, catalog, player, admin)
 ├── hooks/                  # Custom hooks de cliente (useDebounce, useInfiniteScroll, ...)
-├── lib/                    # Clientes e infraestructura (supabase, tmdb, env)
+├── lib/
+│   ├── env/                # Validación de entorno con Zod (client.ts / server.ts)
+│   └── supabase/           # client.ts (browser), server.ts (SSR), admin.ts, proxy.ts
 ├── styles/                 # globals.css con design tokens (@theme)
 ├── supabase/               # Esquema SQL, RLS, seeds
 ├── types/                  # Tipos compartidos (database.types.ts, tmdb.ts)
-└── utils/                  # Utilidades puras (cn, formatters)
+├── utils/                  # Utilidades puras (cn, formatters)
+└── proxy.ts                # Proxy de Next 16 (antiguo middleware.ts): refresco de sesión
 ```
 
 > **Path alias:** `@/*` apunta a la raíz del proyecto (`@/components/ui/button`, `@/lib/tmdb`, ...).
