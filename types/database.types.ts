@@ -1,13 +1,15 @@
 /**
  * Tipos de la base de datos Supabase (esquema `public`).
  *
- * Escritos a mano para reflejar exactamente `supabase/schema.sql`.
- * En el issue de tipos compartidos (#5) se regenerará con el CLI oficial:
+ * Escritos a mano para reflejar exactamente `supabase/schema.sql`, que es la
+ * fuente de verdad del esquema. Se mantienen sincronizados manualmente: se
+ * decidió no depender del CLI (`supabase gen types`), que exige credenciales y
+ * se rompe con proyectos pausados por inactividad.
  *
- *   pnpm supabase gen types typescript --project-id <ref> --schema public \
+ * Si alguna vez se regeneran con el CLI, revisar el resultado a mano:
+ *
+ *   supabase gen types typescript --project-id <ref> --schema public \
  *     > types/database.types.ts
- *
- * hasta entonces, esta es la fuente de verdad para los clientes tipados.
  */
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];

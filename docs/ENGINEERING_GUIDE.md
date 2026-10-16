@@ -110,7 +110,7 @@ shield-flix/
 - Preferir `type` sobre `interface`. `type` para unions/intersections.
 - `as const` cuando útil. Evitar `any`/`unknown` sin justificación.
 - Validación runtime con Zod (env, forms, Server Actions).
-- Tipos DB generados: `supabase gen types typescript --linked > types/database.types.ts`.
+- Tipos DB en `types/database.types.ts`, escritos a mano y sincronizados con `supabase/schema.sql` (sin dependencia del CLI de Supabase). Barrels en `types/index.ts` re-exportados con `export type *`.
 
 ### 2.6 Convenciones Código
 - Nombres descriptivos, funciones pequeñas.
