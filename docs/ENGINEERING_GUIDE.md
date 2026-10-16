@@ -155,7 +155,7 @@ shield-flix/
 - **ESLint** + `@typescript-eslint` estricto.
 - **Prettier** para consistencia.
 - **lint-staged:** formatea/linta solo staged.
-- **commitlint:** valida Conventional Commits.
+- **commitlint:** valida el formato `<tipo>: <descripción corta>` (sin scope).
 - **Husky:** `pre-commit`, `commit-msg`.
 
 ### 4.2 TypeScript Checking

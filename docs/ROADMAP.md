@@ -9,24 +9,33 @@
 - Feature branches por issue: `feat/<id>-<slug>`, `fix/<id>-<slug>`, `refactor/<id>-<slug>`, `perf/<id>-<slug>`, `docs/<id>-<slug>`, `chore/<id>-<slug>`, `ci/<id>-<slug>`, `test/<id>-<slug>`, `build/<id>-<slug>`, `style/<id>-<slug>`.
 - PR obligatorio → _Squash & Merge_ para historial lineal e impecable.
 
-### 1.2 Conventional Commits (inglés)
-Formato: `<type>(<scope>): <summary>`
+### 1.2 Commits (estilo simple)
+Formato: `<tipo>: <descripción corta>` y una línea final con el issue.
+
+```text
+feat: add movie carousel
+
+closes #12
+```
+
+Reglas:
+- Sin scope entre paréntesis.
+- Descripción corta, en imperativo, minúscula, sin punto final.
+- `closes #N` en línea aparte (cierra el issue al hacer push). Para varios: una línea por issue.
+- Un commit = un cambio concreto.
 
 Tipos: `feat, fix, refactor, perf, test, docs, chore, ci, build, style`.
 
-Scopes: `ui, auth, admin, db, player, catalog, search, api, tmdb, vidsrc, types, hooks, lib, utils, config, layout, components`.
-
 Ejemplos:
-- `feat(player): add vidsrc.to embed with ServerSelector`
-- `feat(catalog): implement TMDB rails + infinite scroll`
-- `fix(watch-history): resume playback from saved position`
-- `refactor(ui): create reusable MovieCard/MovieSlider`
-- `docs(db): add RLS policy notes`
+- `feat: add vidsrc embed player`
+- `feat: add TMDB rails and infinite scroll`
+- `fix: resume playback from saved position`
+- `refactor: extract MovieCard component`
+- `docs: add RLS policy notes`
 
 ### 1.3 Versionado & Trazabilidad
 - Tags semánticos: `v0.1.0` (Sprint 1), `v0.2.0` (Sprint 2), `v0.3.0` (Sprint 3), `v1.0.0` (Sprint 4 - Release candidato portafolio).
-- Cada PR referencia issue: `Closes #SF-XXX`.
-- Mensajes descriptivos, imperativos, máximo 72 chars en resumen.
+- Cada commit referencia su issue con `closes #N`.
 
 ## 2. SPRINT 1: Core Architecture & Database Setup
 **Duración objetivo:** 1–2 días | **Meta:** Base sólida, tipos estrictos, layout oscuro cinematográfico.
@@ -44,7 +53,7 @@ Ejemplos:
 
 **Definition of Done (Sprint 1):** `pnpm/npm run lint`, `typecheck`, `build` OK. Schema aplicado a Supabase. Tipos generados. Layout base renderiza impecable.
 
-**Commits ejemplo:** `chore(scaffold): initialize Next.js 15 app router with strict TS and Tailwind`; `feat(ui): add cinematic dark layout and primitives`.
+**Commits ejemplo:** `feat: setup Next.js app router and folder structure`.
 
 ## 3. SPRINT 2: TMDB Catalog, Search & Infinite Scroll
 **Duración objetivo:** 2–3 días | **Meta:** Catálogo vivo desde TMDB, UX tipo Netflix/Disney+/HBO Max.
@@ -62,7 +71,7 @@ Ejemplos:
 
 **Definition of Done:** Home con carruseles, búsqueda funcional, infinite scroll estable, skeletons impecables.
 
-**Commits ejemplo:** `feat(tmdb): add typed TMDB client with caching`; `feat(catalog): build MovieSlider and InfiniteScrollGrid`.
+**Commits ejemplo:** `feat: add TMDB client`; `feat: add movie sliders and infinite scroll`.
 
 ## 4. SPRINT 3: Multi-Server Player (vidsrc.to + YouTube), Auth & Watch History
 **Duración objetivo:** 2–3 días | **Meta:** Reproducción híbrida + auth + "Continuar Viendo" + Favoritos.
@@ -81,7 +90,7 @@ Ejemplos:
 
 **Definition of Done:** Reproducción con vidsrc.to + YouTube, auth funcional, favoritos + watch history con resume.
 
-**Commits ejemplo:** `feat(player): integrate vidsrc.to embed and ServerSelector`; `feat(watch-history): persist and resume playback position`.
+**Commits ejemplo:** `feat: add multi-server video player`; `feat: save and resume watch position`.
 
 ## 5. SPRINT 4: Admin Dashboard & Security Hardening
 **Duración objetivo:** 1–2 días | **Meta:** Gestión admin en tiempo real + blindaje + release portafolio.
@@ -100,7 +109,7 @@ Ejemplos:
 
 **Definition of Done (v1.0.0):** Admin funcional, realtime OK, headers seguros, Lighthouse ≥95, docs completas.
 
-**Commits ejemplo:** `feat(admin): add protected dashboard with AdminTable and CRUD`; `feat(security): add CSP and security headers for embeds`.
+**Commits ejemplo:** `feat: add admin dashboard`; `feat: add security headers and CSP`.
 
 ## 6. Checklist de Calidad (Portafolio)
 - [ ] Tipado 100% estricto (sin `any`, sin `@ts-ignore`)
