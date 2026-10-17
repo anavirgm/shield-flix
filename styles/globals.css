@@ -136,7 +136,8 @@
   background-color: color-mix(in oklab, var(--color-surface) 55%, transparent);
   /* Sin borde: el vidrio ya separa por tono y desenfoque, y una línea de 1px
      a todo lo ancho es justo el recurso que el sistema evita. */
-  @apply backdrop-blur-md backdrop-saturate-150;
+  /* prettier-ignore */
+  @apply backdrop-blur-md backdrop-saturate-150; /* taste-skill-ignore: vidrio de la barra fija del encabezado, el único del sistema */
 }
 
 /* Oculta la barra de scroll conservando el desplazamiento (carruseles de pósters) */
@@ -162,33 +163,41 @@
    razón en lugar de marcar los tres como decoración.
    ------------------------------------------------------------------------ */
 
-/* El nombre cruza la fotografía y se disuelve hacia el fondo. */
-@utility scrim-right {
-  /* prettier-ignore */
-  background-image: linear-gradient(to right, rgba(9, 9, 11, 0) 58%, rgba(9, 9, 11, 0.92) 100%); /* taste-skill-ignore: scrim neutro sobre fotografía */
-}
-
-/* Fotografía a ancho completo en móvil: refuerza arriba y abajo, deja el centro limpio. */
-@utility scrim-veil {
-  /* prettier-ignore */
-  background-image: linear-gradient(to bottom, rgba(9, 9, 11, 0.35) 0%, rgba(9, 9, 11, 0.05) 45%, rgba(9, 9, 11, 0.55) 100%); /* taste-skill-ignore: scrim neutro sobre fotografía */
-}
-
 /* Banda de metraje: el texto se lee sobre cualquier fotograma del clip. */
 @utility scrim-band {
   /* prettier-ignore */
   background-image: linear-gradient(to top, rgba(9, 9, 11, 0.96) 0%, rgba(9, 9, 11, 0.6) 45%, rgba(9, 9, 11, 0.92) 100%); /* taste-skill-ignore: scrim neutro sobre metraje */
 }
 
+/* Portada: el titular, los metadatos, la sinopsis y las acciones se apoyan en la
+   mitad inferior, así que el velo crece de abajo arriba y desaparece arriba del
+   todo, donde la fotografía se ve limpia.
+
+   Las paradas no son estéticas: son la garantía de legibilidad. El texto llega
+   hasta el ~56 % de la altura de la tarjeta (medido, no estimado), así que
+   hasta ahí el velo mantiene α ≥ 0,78. Sobre un fotograma BLANCO PURO el fondo
+   bajo el titular queda en rgb(64,64,65) y el texto #fafafa rinde 9,9:1, con el
+   resto de la banda entre 11:1 y 17:1. Todo por encima del 4,5:1 que exige AA,
+   sin depender de si la imagen del día es clara u oscura: el velo solo depende
+   de estas utilidades y se mide capturando los píxeles bajo el texto. */
+@utility scrim-hero {
+  /* prettier-ignore */
+  background-image: linear-gradient(to top, rgba(9, 9, 11, 0.98) 0%, rgba(9, 9, 11, 0.93) 26%, rgba(9, 9, 11, 0.8) 52%, rgba(9, 9, 11, 0.7) 70%, rgba(9, 9, 11, 0.3) 86%, rgba(9, 9, 11, 0) 100%); /* taste-skill-ignore: scrim neutro sobre fotografía */
+}
+
+/* Refuerzo lateral de la portada: en pantallas anchas el texto ocupa la
+   izquierda, así que esa mitad se apaga y la derecha se queda casi intacta.
+   Ya no sostiene el contraste (eso lo garantiza `scrim-hero`), así que va
+   suave: si no, sobre el velo vertical la esquina inferior izquierda queda
+   casi negra y se pierde la fotografía. */
+@utility scrim-hero-left {
+  /* prettier-ignore */
+  background-image: linear-gradient(to right, rgba(9, 9, 11, 0.6) 0%, rgba(9, 9, 11, 0.22) 48%, rgba(9, 9, 11, 0) 80%); /* taste-skill-ignore: scrim neutro sobre fotografía */
+}
+
 /* ============================================================================
    Animaciones
    ========================================================================= */
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
 
 /* Pulso de los esqueletos de carga: solo opacidad. Un barrido de brillo sería
    un degradado decorativo, así que el bloque respira en su propio tono. */
@@ -221,12 +230,10 @@
    `.reveal`         cada pieza entra cuando su bloque llega al viewport; la
                      enciende el observador de `RevealOnScroll`.
    `.drift`          bucle lento sobre una fotografía: la imagen en movimiento.
-   `.monument-scale` firma de la página: el nombre se encoge al salir.
 
    Con "reducir movimiento" se conserva el fundido y desaparecen el
-   desplazamiento, el zoom, el bucle y el parallax: menos movimiento, no
-   ninguno. Todo parte del estado final visible, así que sin JavaScript (o sin
-   soporte de `animation-timeline`) la página se lee igual.
+   desplazamiento, el zoom y el bucle: menos movimiento, no ninguno. Todo parte
+   del estado final visible, así que sin JavaScript la página se lee igual.
    ------------------------------------------------------------------------ */
 
 /* El fundido es la versión con movimiento reducido: entra igual, sin viaje. */
@@ -259,16 +266,6 @@
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes monument-shrink {
-  from {
-    transform: scale(1);
-  }
-
-  to {
-    transform: scale(0.93);
   }
 }
 
@@ -314,15 +311,6 @@
     /* La imagen en movimiento. Solo transform: no toca el layout. */
     .drift {
       animation: drift 26s ease-in-out infinite alternate;
-    }
-
-    @supports (animation-timeline: scroll()) {
-      .monument-scale {
-        transform-origin: 72% 100%;
-        animation: monument-shrink linear both;
-        animation-timeline: scroll(root block);
-        animation-range: 0svh 55svh;
-      }
     }
   }
 }

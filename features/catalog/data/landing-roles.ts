@@ -17,9 +17,6 @@ function pick(tmdbId: number): PreviewTitle {
   return title;
 }
 
-/** Póster en vertical que ocupa la columna izquierda del hero. */
-export const LANDING_HERO = pick(969681);
-
 /** Fotografía media columna que separa el capítulo del catálogo. */
 export const LANDING_CHAPTER = pick(1368337);
 
