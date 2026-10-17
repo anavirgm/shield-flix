@@ -3,8 +3,16 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, CircleCheck, Info, Play, TriangleAlert } from "lucide-react";
 
+import { MovieCard, MovieSlider } from "@/components/catalog";
 import { Container } from "@/components/layout/container";
 import { Badge, Button, Input, Skeleton, Spinner } from "@/components/ui";
+import {
+  DESIGN_PREVIEW_LINKED,
+  DESIGN_PREVIEW_MOVIES,
+  DESIGN_PREVIEW_UNLINKED,
+  DESIGN_PREVIEW_WITHOUT_POSTER,
+} from "@/features/catalog/data/design-preview";
+import type { MovieSummary } from "@/features/catalog/movie";
 
 export const metadata: Metadata = {
   title: "Design system",
@@ -53,6 +61,29 @@ const typeScale: { name: string; className: string; sample: string }[] = [
     name: "label · sm",
     className: "text-sm text-muted",
     sample: "Catálogo actualizado desde TMDB.",
+  },
+];
+
+/**
+ * Estados del `MovieCard` que la fila no enseña a simple vista: con destino,
+ * sin él y sin carátula. Los ejemplos viven en el fixture de la página.
+ */
+const cardStates: { label: string; note: string; href?: string; movie: MovieSummary }[] = [
+  {
+    label: "Con enlace",
+    note: "La tarjeta entera es el enlace. Al pasar el ratón o al enfocar aparece la sinopsis sobre el póster.",
+    href: "/",
+    movie: DESIGN_PREVIEW_LINKED,
+  },
+  {
+    label: "Sin enlace",
+    note: "Sin destino sigue siendo un bloque informativo: no tiene hover ni foco, así que tampoco enseña sinopsis.",
+    movie: DESIGN_PREVIEW_UNLINKED,
+  },
+  {
+    label: "Sin carátula",
+    note: "El hueco del póster no se colapsa: conserva el aspecto 2:3 y lo ocupa el título.",
+    movie: DESIGN_PREVIEW_WITHOUT_POSTER,
   },
 ];
 
@@ -235,6 +266,34 @@ export default function DesignSystemPage() {
               <Skeleton className="h-40" />
             </div>
           </div>
+        </Section>
+
+        <Section
+          title="MovieCard"
+          description="Tarjeta del catálogo: póster 2:3, título, año y nota media. Lo esencial va siempre debajo del póster, visible también donde no hay hover; la sinopsis es un refuerzo progresivo. Con 0 votos la nota se omite en lugar de mostrar un 0 (en la fila de abajo, «The Mongoose»)."
+        >
+          <div className="grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-3">
+            {cardStates.map((state) => (
+              <figure key={state.label} className="flex flex-col gap-3">
+                <MovieCard movie={state.movie} href={state.href} />
+                <figcaption className="flex flex-col gap-1">
+                  <span className="text-sm font-medium">{state.label}</span>
+                  <span className="text-sm text-pretty text-muted">{state.note}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          title="MovieSlider"
+          description="Fila horizontal con scroll-snap. Las flechas solo aparecen cuando quedan títulos en esa dirección, y nunca en pantallas táctiles, donde el arrastre nativo del navegador es el gesto. La fila también recibe foco y responde a las flechas del teclado."
+        >
+          <MovieSlider heading="Tendencias de la semana" headingLevel={3}>
+            {DESIGN_PREVIEW_MOVIES.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} href="/" />
+            ))}
+          </MovieSlider>
         </Section>
       </Container>
     </main>

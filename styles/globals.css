@@ -195,6 +195,18 @@
   background-image: linear-gradient(to right, rgba(9, 9, 11, 0.6) 0%, rgba(9, 9, 11, 0.22) 48%, rgba(9, 9, 11, 0) 80%); /* taste-skill-ignore: scrim neutro sobre fotografía */
 }
 
+/* Tarjeta del catálogo: la sinopsis del overlay se apoya SOLO en la banda
+   inferior (dos líneas + padding ≈ 17 % de la altura del póster, medido sobre
+   el tamaño mínimo de la fila), así que el velo es corto y deja el póster
+   limpio en el resto. α ≥ 0,86 hasta el 24 %: sobre un póster BLANCO PURO eso
+   deja rgb(43,43,45) bajo el texto y #fafafa rinde ~13,5:1, muy por encima del
+   4,5:1 de AA. Al estar el overlay oculto a menos que se pase el ratón o se
+   enfoque, el póster sin velo es lo que se ve siempre. */
+@utility scrim-card {
+  /* prettier-ignore */
+  background-image: linear-gradient(to top, rgba(9, 9, 11, 0.94) 0%, rgba(9, 9, 11, 0.86) 24%, rgba(9, 9, 11, 0.5) 48%, rgba(9, 9, 11, 0) 72%); /* taste-skill-ignore: scrim neutro sobre fotografía */
+}
+
 /* ============================================================================
    Animaciones
    ========================================================================= */
